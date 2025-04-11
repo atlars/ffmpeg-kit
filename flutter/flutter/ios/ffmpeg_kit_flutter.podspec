@@ -15,10 +15,21 @@ Pod::Spec.new do |s|
   s.source_files        = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
 
-  s.default_subspec     = 'https'
+  s.default_subspec     = 'precompiled'
 
   s.dependency          'Flutter'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
+
+  s.subspec 'precompiled' do |ss|
+    ss.vendored_frameworks = 'Frameworks/ffmpegkit.xcframework',
+                             'Frameworks/libavcodec.xcframework',
+                             'Frameworks/libavdevice.xcframework',
+                             'Frameworks/libavfilter.xcframework',
+                             'Frameworks/libavformat.xcframework',
+                             'Frameworks/libavutil.xcframework',
+                             'Frameworks/libswresample.xcframework',
+                             'Frameworks/libswscale.xcframework'
+  end
 
   s.subspec 'min' do |ss|
     ss.source_files         = 'Classes/**/*'
