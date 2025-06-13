@@ -2,8 +2,13 @@
 
 ## Build
 ```bash
+# iOS
 ./ios.sh --target=12.1 --xcframework --enable-libwebp
 cp -r prebuilt/bundle-apple-xcframework-ios/* flutter/flutter/ios/Frameworks/
+# Android
+export ANDROID_SDK_ROOT=""
+export ANDROID_NDK_ROOT=""
+./android --enable-libwebp --api-level=35
 ```
 
 ## Notice
