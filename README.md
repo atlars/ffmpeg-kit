@@ -8,8 +8,10 @@ cp -r prebuilt/bundle-apple-xcframework-ios/* flutter/flutter/ios/Frameworks/
 # Android
 export ANDROID_SDK_ROOT=""
 export ANDROID_NDK_ROOT=""
-./android --enable-libwebp --api-level=35
+./android.sh --enable-libwebp
 ```
+
+Android NDK r25 with 16kb support: https://ci.android.com/builds/branches/aosp-ndk-r25-release/grid
 
 ## Notice
 FFmpegKit has been officially retired. There will be no further `ffmpeg-kit` releases.
