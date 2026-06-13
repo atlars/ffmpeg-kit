@@ -5,46 +5,13 @@
 # iOS
 ./ios.sh --target=12.1 --xcframework --enable-libwebp
 cp -r prebuilt/bundle-apple-xcframework-ios/* flutter/flutter/ios/Frameworks/
+# Get ffmpeg version from apple headers
+rg -n 'FFMPEG_VERSION' flutter/flutter/ios/Frameworks/libavutil.xcframework
+
 # Android
 export ANDROID_SDK_ROOT=""
 export ANDROID_NDK_ROOT=""
 ./android.sh --enable-libwebp
-```
-
-## Build With FFmpeg Master
-`ffmpeg-kit` still defaults to FFmpeg `n6.0`, but the build scripts now accept an FFmpeg source override using environment variables.
-
-- `FFMPEG_SOURCE_REF`
-  Default: `n6.0`
-  Example: `master`
-- `FFMPEG_SOURCE_URL`
-  Default: `https://github.com/arthenica/FFmpeg`
-  Optional override for future mirrors or forks
-
-Use `--redownload-ffmpeg` when changing the FFmpeg ref so the existing `src/ffmpeg` checkout is replaced.
-
-```bash
-# iOS XCFrameworks for Flutter
-FFMPEG_SOURCE_URL=https://github.com/FFmpeg/FFmpeg FFMPEG_SOURCE_REF=master ./ios.sh --target=12.1 --xcframework --enable-libwebp --redownload-ffmpeg
-cp -r prebuilt/bundle-apple-xcframework-ios/* flutter/flutter/ios/Frameworks/
-
-# Android AAR for Flutter
-export ANDROID_SDK_ROOT=""
-export ANDROID_NDK_ROOT=""
-FFMPEG_SOURCE_URL=https://github.com/FFmpeg/FFmpeg FFMPEG_SOURCE_REF=master ./android.sh --enable-libwebp --redownload-ffmpeg
-mkdir -p flutter/flutter/android/libs
-cp prebuilt/bundle-android-aar/*.aar flutter/flutter/android/libs/
-```
-
-Verification examples:
-
-```bash
-# Confirm the source resolver is using the requested FFmpeg ref
-bash -lc 'source scripts/source.sh; echo "$(get_library_source ffmpeg 1) $(get_library_source ffmpeg 2)"'
-FFMPEG_SOURCE_REF=master bash -lc 'source scripts/source.sh; echo "$(get_library_source ffmpeg 1) $(get_library_source ffmpeg 2)"'
-
-# Confirm generated Apple headers no longer report n6.0 after a master build
-rg -n 'FFMPEG_VERSION' flutter/flutter/ios/Frameworks/libavutil.xcframework
 ```
 
 Android NDK r25 with 16kb support: https://ci.android.com/builds/branches/aosp-ndk-r25-release/grid
