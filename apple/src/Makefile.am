@@ -23,17 +23,32 @@ libffmpegkit_la_SOURCES = \
     ffmpegkit_exception.m \
     fftools_cmdutils.c \
     fftools_ffmpeg.c \
+    fftools_ffmpeg_dec.c \
     fftools_ffmpeg_demux.c \
+    fftools_ffmpeg_enc.c \
     fftools_ffmpeg_filter.c \
     fftools_ffmpeg_hw.c \
     fftools_ffmpeg_mux.c \
     fftools_ffmpeg_mux_init.c \
     fftools_ffmpeg_opt.c \
+    fftools_ffmpeg_sched.c \
     fftools_ffprobe.c \
     fftools_objpool.c \
     fftools_opt_common.c \
     fftools_sync_queue.c \
-    fftools_thread_queue.c
+    fftools_thread_queue.c \
+    graph/graphprint.c \
+    textformat/avtextformat.c \
+    textformat/tf_compact.c \
+    textformat/tf_default.c \
+    textformat/tf_flat.c \
+    textformat/tf_ini.c \
+    textformat/tf_json.c \
+    textformat/tf_mermaid.c \
+    textformat/tf_xml.c \
+    textformat/tw_avio.c \
+    textformat/tw_buffer.c \
+    textformat/tw_stdout.c
 
 include_HEADERS = \
     AbstractSession.h \
@@ -66,6 +81,8 @@ include_HEADERS = \
     fftools_cmdutils.h \
     fftools_ffmpeg.h \
     fftools_ffmpeg_mux.h \
+    fftools_ffmpeg_sched.h \
+    fftools_ffmpeg_utils.h \
     fftools_fopen_utf8.h \
     fftools_objpool.h \
     fftools_opt_common.h \

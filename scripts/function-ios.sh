@@ -401,14 +401,7 @@ get_ldflags() {
 
   case $1 in
   ffmpeg-kit)
-    case ${ARCH} in
-    armv7 | armv7s | arm64 | arm64e | *-mac-catalyst)
-      echo "${ARCH_FLAGS} ${LINKED_LIBRARIES} ${COMMON_FLAGS} ${BITCODE_FLAGS} ${OPTIMIZATION_FLAGS}"
-      ;;
-    *)
-      echo "${ARCH_FLAGS} ${LINKED_LIBRARIES} ${COMMON_FLAGS} ${OPTIMIZATION_FLAGS}"
-      ;;
-    esac
+    echo "${ARCH_FLAGS} ${LINKED_LIBRARIES} ${COMMON_FLAGS} ${OPTIMIZATION_FLAGS}"
     ;;
   *)
     # NOTE THAT ffmpeg ALSO NEEDS BITCODE, IT IS ENABLED IN ffmpeg.sh

@@ -20,6 +20,7 @@ disabled_libraries=()
 
 # SET DEFAULTS SETTINGS
 enable_default_ios_architectures
+export NO_BITCODE="1"
 
 # SELECT XCODE VERSION USED FOR BUILDING
 XCODE_FOR_FFMPEG_KIT=$(ls ~/.xcode.for.ffmpeg.kit.sh 2>>"${BASEDIR}"/build.log)
