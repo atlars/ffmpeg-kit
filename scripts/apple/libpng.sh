@@ -31,6 +31,12 @@ if [[ -n "$DETECTED_IOS_SDK_VERSION" && $(compare_versions "$DETECTED_IOS_SDK_VE
   ${SED_INLINE} "s|ZLIB_VERNUM default .*|ZLIB_VERNUM default 0|g" "${BASEDIR}"/src/"${LIB_NAME}"/scripts/pnglibconf.dfa
 fi
 
+# WORKAROUND FOR XCODE 26+ APPLE SDKS
+# libpng 1.6.40 may include <fp.h> for Apple targets. Newer iPhoneOS SDKs no
+# longer provide <fp.h>, so switch that include to <math.h> in the libpng
+# private header before configure/build.
+${SED_INLINE} "s|#      include <fp.h>|#      include <math.h>|g" "${BASEDIR}"/src/"${LIB_NAME}"/pngpriv.h
+
 ./configure \
   --prefix="${LIB_INSTALL_PREFIX}" \
   --with-pic \
