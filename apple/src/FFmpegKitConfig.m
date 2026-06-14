@@ -77,6 +77,7 @@ static LogRedirectionStrategy globalLogRedirectionStrategy;
 /** Redirection control variables */
 static int redirectionEnabled;
 static NSRecursiveLock *lock;
+static NSRecursiveLock *executeLock;
 static dispatch_semaphore_t semaphore;
 static NSMutableArray *callbackDataArray;
 
@@ -660,6 +661,7 @@ void callbackBlockFunction() {
 
 int executeFFmpeg(long sessionId, NSArray* arguments) {
     NSString* const LIB_NAME = @"ffmpeg";
+    int returnCode = 0;
 
     // SETS DEFAULT LOG LEVEL BEFORE STARTING A NEW RUN
     av_log_set_level(configuredLogLevel);
@@ -679,27 +681,34 @@ int executeFFmpeg(long sessionId, NSArray* arguments) {
         commandCharPArray[i + 1] = (char *) [argument UTF8String];
     }
 
-    // REGISTER THE ID BEFORE STARTING THE SESSION
-    globalSessionId = sessionId;
-    registerSessionId(sessionId);
+    [executeLock lock];
 
-    resetMessagesInTransmit(sessionId);
+    @try {
+        // REGISTER THE ID BEFORE STARTING THE SESSION
+        globalSessionId = sessionId;
+        registerSessionId(sessionId);
 
-    // RUN
-    int returnCode = ffmpeg_execute(([arguments count] + 1), commandCharPArray);
+        resetMessagesInTransmit(sessionId);
 
-    // ALWAYS REMOVE THE ID FROM THE MAP
-    removeSession(sessionId);
+        // RUN
+        returnCode = ffmpeg_execute(([arguments count] + 1), commandCharPArray);
+    } @finally {
+        // ALWAYS REMOVE THE ID FROM THE MAP
+        removeSession(sessionId);
+        globalSessionId = 0;
 
-    // CLEANUP
-    av_free(commandCharPArray[0]);
-    av_free(commandCharPArray);
+        // CLEANUP
+        av_free(commandCharPArray[0]);
+        av_free(commandCharPArray);
+        [executeLock unlock];
+    }
 
     return returnCode;
 }
 
 int executeFFprobe(long sessionId, NSArray* arguments) {
     NSString* const LIB_NAME = @"ffprobe";
+    int returnCode = 0;
 
     // SETS DEFAULT LOG LEVEL BEFORE STARTING A NEW RUN
     av_log_set_level(configuredLogLevel);
@@ -719,21 +728,27 @@ int executeFFprobe(long sessionId, NSArray* arguments) {
         commandCharPArray[i + 1] = (char *) [argument UTF8String];
     }
 
-    // REGISTER THE ID BEFORE STARTING THE SESSION
-    globalSessionId = sessionId;
-    registerSessionId(sessionId);
+    [executeLock lock];
 
-    resetMessagesInTransmit(sessionId);
+    @try {
+        // REGISTER THE ID BEFORE STARTING THE SESSION
+        globalSessionId = sessionId;
+        registerSessionId(sessionId);
 
-    // RUN
-    int returnCode = ffprobe_execute(([arguments count] + 1), commandCharPArray);
+        resetMessagesInTransmit(sessionId);
 
-    // ALWAYS REMOVE THE ID FROM THE MAP
-    removeSession(sessionId);
-    
-    // CLEANUP
-    av_free(commandCharPArray[0]);
-    av_free(commandCharPArray);
+        // RUN
+        returnCode = ffprobe_execute(([arguments count] + 1), commandCharPArray);
+    } @finally {
+        // ALWAYS REMOVE THE ID FROM THE MAP
+        removeSession(sessionId);
+        globalSessionId = 0;
+        
+        // CLEANUP
+        av_free(commandCharPArray[0]);
+        av_free(commandCharPArray);
+        [executeLock unlock];
+    }
 
     return returnCode;
 }
@@ -769,6 +784,7 @@ int executeFFprobe(long sessionId, NSArray* arguments) {
     
     redirectionEnabled = 0;
     lock = [[NSRecursiveLock alloc] init];
+    executeLock = [[NSRecursiveLock alloc] init];
     semaphore = dispatch_semaphore_create(0);
     callbackDataArray = [[NSMutableArray alloc] init];
     
