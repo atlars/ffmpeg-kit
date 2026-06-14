@@ -32,9 +32,10 @@ get_library_source() {
     SOURCE_TYPE="TAG"
     ;;
   ffmpeg)
-    SOURCE_REPO_URL="https://github.com/arthenica/FFmpeg"
-    SOURCE_ID="n6.0"
-    SOURCE_TYPE="TAG"
+    # n6.0 fork with decode animated webp patch
+    SOURCE_REPO_URL="https://github.com/atlars/FFmpeg"
+    SOURCE_ID="bd78c8db7270c708a065c7fce1760453ca342a45"
+    SOURCE_TYPE="COMMIT"
     ;;
   fontconfig)
     SOURCE_REPO_URL="https://github.com/arthenica/fontconfig"
