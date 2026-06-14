@@ -9,6 +9,7 @@ cp -r prebuilt/bundle-apple-xcframework-ios/* flutter/flutter/ios/Frameworks/
 export ANDROID_SDK_ROOT=""
 export ANDROID_NDK_ROOT=""
 ./android.sh --enable-libwebp
+cp prebuilt/bundle-android-aar/ffmpeg-kit/ffmpeg-kit.aar flutter/flutter/android/libs/ffmpegkit-flutter-6.0-16kb.aar
 ```
 
 Android NDK r25 with 16kb support: https://ci.android.com/builds/branches/aosp-ndk-r25-release/grid
