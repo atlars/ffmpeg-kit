@@ -3,12 +3,12 @@
 ## Build
 ```bash
 # iOS
-./ios.sh --target=12.1 --xcframework --enable-libwebp
+./ios.sh --target=12.1 --xcframework --enable-libwebp --enable-libvpx
 cp -r prebuilt/bundle-apple-xcframework-ios/* flutter/flutter/ios/Frameworks/
 # Android
 export ANDROID_SDK_ROOT=""
 export ANDROID_NDK_ROOT=""
-./android.sh --enable-libwebp
+./android.sh --enable-libwebp --enable-libvpx
 cp prebuilt/bundle-android-aar/ffmpeg-kit/ffmpeg-kit.aar flutter/flutter/android/libs/ffmpegkit-flutter-6.0-16kb.aar
 ```
 
